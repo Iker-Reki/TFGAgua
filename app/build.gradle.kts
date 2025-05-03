@@ -36,6 +36,8 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
+
     }
     kotlinOptions {
         jvmTarget = "11"
@@ -86,6 +88,11 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-firestore-ktx:25.1.4")
+    implementation(libs.firebase.auth)
+    implementation(libs.ads.mobile.sdk)
+
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
