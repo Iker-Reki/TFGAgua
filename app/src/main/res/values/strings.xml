@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TFGAgua</string>
+    <string name="back_button">Back</string>
+    <string name="user_profile">User profile</string>
 </resources>
