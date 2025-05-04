@@ -8,6 +8,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.example.tfgagua.R
@@ -25,7 +26,7 @@ fun MyTopBar(
             if (showBackArrow) {
                 IconButton(onClick = { navController.popBackStack() }) {
                     Icon(
-                        imageVector = Icons.Default.ArrowBack,
+                        painter = painterResource(id = R.drawable.img_atras),
                         contentDescription = stringResource(id = R.string.back_button)
                     )
                 }
@@ -36,7 +37,7 @@ fun MyTopBar(
                 navController.navigate("userProfileRoute")
             }) {
                 Icon(
-                    imageVector = Icons.Default.Person,
+                    painter = painterResource(id = R.drawable.img_ajuste),
                     contentDescription = stringResource(id = R.string.user_profile)
                 )
             }
