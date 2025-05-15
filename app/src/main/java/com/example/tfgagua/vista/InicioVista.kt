@@ -2,6 +2,7 @@ package com.example.tfgagua.vista
 
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -40,7 +41,6 @@ import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun InicioVista(
-    auth: FirebaseAuth,
     navigateToFormReg: () -> Unit = {},
     navigateTolista: () -> Unit = {}
 ) {
@@ -102,17 +102,9 @@ fun InicioVista(
         //________________________Boton de logearse_____________________________
         Button(
             onClick = {
-                auth.signInWithEmailAndPassword(email,contra).addOnCompleteListener {
-                    if(it.isSuccessful){
-                        //navigateTolista()
-                        Log.i("Prueba","LOGIN OK")
 
-                    }else{
-                        //TODO: PopUp de mensaje de error
-                        Log.i("Prueba","LOGIN NO")
-                    }
 
-                }
+
             },
             modifier = Modifier
                 .fillMaxWidth()

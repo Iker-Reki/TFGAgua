@@ -1,12 +1,41 @@
 package com.example.tfgagua.vista
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.google.firebase.auth.FirebaseAuth
 
+@Preview
 @Composable
-fun RegistroScreen(auth: FirebaseAuth) {
-  /*  onRegister: (UserData) -> Unit,
-    onCancel: () -> Unit
+fun RegistroScreen(
 ) {
     var nombre by remember { mutableStateOf("") }
     var ape1 by remember { mutableStateOf("") }
@@ -115,15 +144,7 @@ fun RegistroScreen(auth: FirebaseAuth) {
         ) {
             Button(
                 onClick = {
-                    onRegister(
-                        UserData(
-                            nombre,
-                            ape1,
-                            ape2,
-                            correo,
-                            contra
-                        )
-                    )
+
                 },
                 modifier = Modifier.fillMaxWidth()
                     .background(Color.Green)
@@ -134,7 +155,7 @@ fun RegistroScreen(auth: FirebaseAuth) {
             }
 
             Button(
-                onClick = { onCancel() },
+                onClick = {  },
                 modifier = Modifier.fillMaxWidth()
                     .background(Color.Red)
 
@@ -168,24 +189,4 @@ private fun CampoFormulario(
             visualTransformation = visualTransformation
         )
     }
-}
-
-data class UserData(
-    val nombre: String,
-    val ap1: String,
-    val ape2: String,
-    val correo: String,
-    val contra: String
-)
-
-// Vista previa
-@Preview
-@Composable
-fun PreviewRegistroScreen() {
-    TFGAguaTheme {
-        RegistroScreen(
-            onRegister = { /* Lógica de registro */ },
-            onCancel = { /* Lógica de cancelación */ }
-        )
-    }*/
 }

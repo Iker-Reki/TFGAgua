@@ -1,4 +1,4 @@
-package com.example.tfgagua.model
+package com.example.tfgagua.data
 
 import java.util.Date
 

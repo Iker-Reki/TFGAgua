@@ -2,6 +2,7 @@ package com.example.tfgagua
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -12,12 +13,22 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.tfgagua.conexion.ApiService
+import com.example.tfgagua.conexion.RetrofitClient
+import com.example.tfgagua.data.Usu
 import com.example.tfgagua.ui.theme.TFGAguaTheme
 import com.example.tfgagua.vista.InicioVista
 import com.example.tfgagua.vista.RegistroScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import okhttp3.OkHttpClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.Retrofit.*
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : ComponentActivity() {
 
@@ -34,11 +45,14 @@ class MainActivity : ComponentActivity() {
 
             TFGAguaTheme {
                 Surface {
+                    Prueba()
                     ElementosMenu(navController, auth)
                 }
             }
         }
     }
+
+
 
     //Se llama despues del onCreate
     /**
@@ -51,6 +65,28 @@ class MainActivity : ComponentActivity() {
             //navController.navigate("lista")
             Log.i("Prueba", "Estoy logeado")
         }
+    }
+
+    private fun Prueba() {
+
+        RetrofitClient.instancia.obtenerUsu().enqueue(object : Callback<List<Usu>> {
+            override fun onResponse(call: Call<List<Usu>>, response: Response<List<Usu>>) {
+                if (response.isSuccessful) {
+                    val lista = response.body()
+                    lista?.forEach {
+                        Log.d("USUARIO", "ID: ${it.id}, Nombre: ${it.nombre}, Apellido 1: ${it.apellido1}, Apellido 2: ${it.apellido2}, Correo:${it.correo}")
+                    }
+                    Toast.makeText(this@MainActivity, "Usuarios cargados: ${lista?.size}", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@MainActivity, "Error al obtener usuarios", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Usu>>, t: Throwable) {
+                Toast.makeText(this@MainActivity, "Error: ${t.message}", Toast.LENGTH_LONG).show()
+                Log.d("ERROR","${t.message}")
+            }
+        })
     }
 }
 /*
@@ -82,7 +118,7 @@ fun ElementosMenu(navController: NavHostController, auth: FirebaseAuth) {
 
             composable("registro") {
 
-                RegistroScreen(auth)
+                RegistroScreen()
 
             }
 
@@ -94,4 +130,5 @@ fun ElementosMenu(navController: NavHostController, auth: FirebaseAuth) {
 
         }
     }
+
 }
