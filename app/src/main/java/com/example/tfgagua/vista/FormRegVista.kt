@@ -2,7 +2,6 @@ package com.example.tfgagua.vista
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +13,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.OutlinedTextField
@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -31,12 +32,12 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.firebase.auth.FirebaseAuth
+import com.example.tfgagua.ui.theme.DarkBlue
+import com.example.tfgagua.ui.theme.LightBlue
 
 @Preview
 @Composable
-fun RegistroScreen(
-) {
+fun RegistroScreen() {
     var nombre by remember { mutableStateOf("") }
     var ape1 by remember { mutableStateOf("") }
     var ape2 by remember { mutableStateOf("") }
@@ -48,85 +49,80 @@ fun RegistroScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
             .verticalScroll(rememberScrollState())
+            .background(Brush.verticalGradient(listOf(DarkBlue, LightBlue)))
+            .padding(horizontal = 16.dp, vertical = 20.dp), // Reducido el padding vertical
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(40.dp) // Espaciado más ajustado
     ) {
-        // Título con subrayado verde
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp)
+        // Título más compacto
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = "REGISTRO",
                 style = MaterialTheme.typography.h4.copy(
                     fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
-                ),
-                modifier = Modifier.align(Alignment.Center)
+                    textAlign = TextAlign.Center,
+                    color = Color.White
+                )
             )
 
-            // Línea verde debajo del título
             HorizontalDivider(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(top = 8.dp),
-                thickness = 3.dp,
+                modifier = Modifier.padding(top = 4.dp), // Menor espaciado
+                thickness = 2.dp, // Línea más delgada
                 color = Color.Green
             )
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Card con el formulario
+        // Card con formulario más compacto
         Card(
-            modifier = Modifier.fillMaxWidth(),
-
+            modifier = Modifier.fillMaxWidth()
         ) {
             Column(
-                modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                modifier = Modifier.padding(12.dp), // Padding reducido
+                verticalArrangement = Arrangement.spacedBy(8.dp) // Espaciado reducido
             ) {
-                // Campos del formulario
-                CampoFormulario(
+                // Campos más compactos
+                CompactCampoFormulario(
                     label = "Nombre",
                     value = nombre,
                     onValueChange = { nombre = it }
                 )
 
-                CampoFormulario(
+                CompactCampoFormulario(
                     label = "Primer apellido",
                     value = ape1,
                     onValueChange = { ape1 = it }
                 )
 
-                CampoFormulario(
+                CompactCampoFormulario(
                     label = "Segundo apellido",
                     value = ape2,
                     onValueChange = { ape2 = it }
                 )
 
-                CampoFormulario(
+                CompactCampoFormulario(
                     label = "Correo electrónico",
                     value = correo,
-                    onValueChange = { correo = it },
-
+                    onValueChange = { correo = it }
                 )
 
-                CampoFormulario(
-                    label = "Confirmar correo electrónico",
+                CompactCampoFormulario(
+                    label = "Confirmar correo",
                     value = confirmCorreo,
                     onValueChange = { confirmCorreo = it }
                 )
 
-                CampoFormulario(
+                CompactCampoFormulario(
                     label = "Contraseña",
                     value = contra,
                     onValueChange = { contra = it },
                     visualTransformation = PasswordVisualTransformation()
                 )
 
-                CampoFormulario(
+                CompactCampoFormulario(
                     label = "Confirmar contraseña",
                     value = confirmContra,
                     onValueChange = { confirmContra = it },
@@ -135,40 +131,45 @@ fun RegistroScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(32.dp))
-
-        // Botones
+        // Botones con tamaño fijo
         Column(
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Button(
-                onClick = {
-
-                },
-                modifier = Modifier.fillMaxWidth()
-                    .background(Color.Green)
-                    .padding(10.dp),
-
+                onClick = { /* Acción de confirmar */ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp), // Altura fija
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Green,
+                    contentColor = Color.White
+                )
             ) {
                 Text("Confirmar")
             }
 
             Button(
-                onClick = {  },
-                modifier = Modifier.fillMaxWidth()
-                    .background(Color.Red)
-
-
+                onClick = { /* Acción de cancelar */ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp), // Altura fija
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Red,
+                    contentColor = Color.White
+                )
             ) {
                 Text("Cancelar")
             }
         }
+
+        // Espaciador final más pequeño
+        Spacer(modifier = Modifier.height(12.dp))
     }
 }
 
 @Composable
-private fun CampoFormulario(
+private fun CompactCampoFormulario(
     label: String,
     value: String,
     onValueChange: (String) -> Unit,
@@ -177,14 +178,18 @@ private fun CampoFormulario(
     Column {
         Text(
             text = label,
-            style = MaterialTheme.typography.subtitle2,
-            color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f)
+            style = MaterialTheme.typography.caption.copy( // Texto más pequeño
+                color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f)
+            ),
+            modifier = Modifier.padding(bottom = 2.dp) // Menor espaciado
         )
 
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(52.dp), // Altura reducida
             singleLine = true,
             visualTransformation = visualTransformation
         )
