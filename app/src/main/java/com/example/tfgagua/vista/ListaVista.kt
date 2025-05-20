@@ -9,9 +9,54 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.tfgagua.model.UsuViewModel
+import com.example.tfgagua.ui.theme.DarkBlue
+import com.example.tfgagua.ui.theme.LightBlue
+
+@Composable
+fun ListaScreen(viewModel: UsuViewModel) {
+    val usuario by viewModel.usuario.collectAsState() // Observa cambios
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        if (usuario != null) {
+            // Título
+            Text(
+                "Perfil del Usuario",
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+
+            // Datos en formato lista
+            listOf(
+                "ID" to usuario!!.id.toString(),
+                "Nombre" to usuario!!.nombre,
+                "Apellidos" to "${usuario!!.apellido1} ${usuario!!.apellido2}",
+                "Correo" to usuario!!.correo
+            ).forEach { (label, value) ->
+                Column(modifier = Modifier.padding(vertical = 8.dp)) {
+                    Text(
+                        text = label,
+                        color = DarkBlue,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(text = value)
+                    Divider(color = LightBlue, thickness = 1.dp)
+                }
+            }
+        } else {
+            Text("No hay datos de usuario")
+        }
+    }
+}
 
 /*
 @Composable

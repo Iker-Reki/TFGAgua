@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,8 +17,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.tfgagua.conexion.ApiService
 import com.example.tfgagua.conexion.RetrofitClient
 import com.example.tfgagua.data.Usu
+import com.example.tfgagua.model.UsuViewModel
 import com.example.tfgagua.ui.theme.TFGAguaTheme
 import com.example.tfgagua.vista.InicioVista
+import com.example.tfgagua.vista.ListaScreen
 import com.example.tfgagua.vista.RegistroScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -33,11 +36,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
-    private lateinit var auth: FirebaseAuth
+    //private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        auth = Firebase.auth
+       //auth = Firebase.auth
         enableEdgeToEdge()
         setContent {
 
@@ -45,15 +48,16 @@ class MainActivity : ComponentActivity() {
 
             TFGAguaTheme {
                 Surface {
-                    Prueba()
-                    ElementosMenu(navController, auth)
+                    //Prueba()
+                   // ElementosMenu(navController)
+                    MainScreen()
                 }
             }
         }
     }
 
 
-
+/*
     //Se llama despues del onCreate
     /**
      * Si el auth esta ya asociado va directamente a la vista de lista de embalses
@@ -66,7 +70,7 @@ class MainActivity : ComponentActivity() {
             Log.i("Prueba", "Estoy logeado")
         }
     }
-
+*/
     private fun Prueba() {
 
         RetrofitClient.instancia.obtenerUsu().enqueue(object : Callback<List<Usu>> {
@@ -89,7 +93,7 @@ class MainActivity : ComponentActivity() {
         })
     }
 }
-/*
+
 @Composable
 fun MainScreen() {
     //NavController  - NavHost -
@@ -97,9 +101,11 @@ fun MainScreen() {
     ElementosMenu(navController)
 }
 
- */
+
 @Composable
-fun ElementosMenu(navController: NavHostController, auth: FirebaseAuth) {
+fun ElementosMenu(navController: NavHostController) {
+    val usuViewModel : UsuViewModel = viewModel()
+
     Scaffold(
 //        topBar = {
 //            TopBar(navController = navController)
@@ -107,12 +113,11 @@ fun ElementosMenu(navController: NavHostController, auth: FirebaseAuth) {
     ) { paddingValues ->
         NavHost(navController = navController, startDestination = "inicio") {
 
-
             composable("inicio") {
                 InicioVista(
-                    auth,
                     navigateToFormReg = {navController.navigate("registro")},
-                    navigateTolista = {navController.navigate("lista")}
+                    navigateTolista = {navController.navigate("lista")} ,
+                    viewModel = usuViewModel
                 )
             }
 
@@ -123,7 +128,7 @@ fun ElementosMenu(navController: NavHostController, auth: FirebaseAuth) {
             }
 
             composable("lista") {
-
+                ListaScreen(viewModel = usuViewModel)
 
 
             }

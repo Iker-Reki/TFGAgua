@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,24 +30,38 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tfgagua.R
+import com.example.tfgagua.conexion.RetrofitClient
+import com.example.tfgagua.data.LoginRequest
 import com.example.tfgagua.ui.theme.DarkBlue
 import com.example.tfgagua.ui.theme.LightBlue
 import com.example.tfgagua.ui.theme.NoSelectField
 import com.example.tfgagua.ui.theme.SelectField
 import com.google.firebase.auth.FirebaseAuth
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
+import androidx.compose.ui.platform.LocalContext
+import com.example.tfgagua.model.UsuViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 @Composable
 fun InicioVista(
     navigateToFormReg: () -> Unit = {},
-    navigateTolista: () -> Unit = {}
+    navigateTolista: () -> Unit = {},
+    viewModel: UsuViewModel
 ) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     var email by remember { mutableStateOf("") }
     var contra by remember { mutableStateOf("") }
+
+
 
 
     Column(
@@ -92,7 +107,7 @@ fun InicioVista(
                 unfocusedContainerColor =  NoSelectField,
                 focusedContainerColor = SelectField
             ))
-        //TODO: Boxes de usuario y contraseña
+
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -102,7 +117,37 @@ fun InicioVista(
         //________________________Boton de logearse_____________________________
         Button(
             onClick = {
+                if (email.isBlank() || contra.isBlank()) {
+                    Toast.makeText(context, "Ingrese email y contraseña", Toast.LENGTH_SHORT).show()
+                } else {
+                    scope.launch(Dispatchers.IO) {
+                        try {
+                            val loginRequest = LoginRequest(
+                                correo = email.trim(),
+                                contrasena = contra.trim()
+                            )
+                            val response = RetrofitClient.instancia.login(loginRequest).execute()
 
+                            withContext(Dispatchers.Main) {
+                                when {
+                                    !response.isSuccessful -> {
+                                        Toast.makeText(context, "Error del servidor", Toast.LENGTH_SHORT).show()
+                                    }
+                                    response.body()?.success != true -> {
+                                        Toast.makeText(context, response.body()?.error ?: "Error desconocido", Toast.LENGTH_SHORT).show()
+                                    }
+                                    else -> {
+                                        viewModel.setUsuario(response.body()!!.usuario!!)
+                                        navigateTolista()
+                                    }
+                                }
+                            }
+
+                        } catch (e: Exception) {
+                            Toast.makeText(context, "Error de conexión", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
 
 
             },
@@ -138,7 +183,9 @@ fun InicioVista(
 
         //________________________Boton de continuar sin inicio de sesion_____________________________
         Button(
-            onClick = {},
+            onClick = {
+                //TODO: Pasar a las listas con un usuario y contraseña predefinido
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp),
