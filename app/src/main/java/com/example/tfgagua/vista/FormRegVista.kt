@@ -51,11 +51,11 @@ fun RegistroScreen() {
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .background(Brush.verticalGradient(listOf(DarkBlue, LightBlue)))
-            .padding(horizontal = 16.dp, vertical = 20.dp), // Reducido el padding vertical
+            .padding(horizontal = 16.dp, vertical = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(40.dp) // Espaciado más ajustado
+        verticalArrangement = Arrangement.spacedBy(40.dp)
     ) {
-        // Título más compacto
+
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -69,22 +69,23 @@ fun RegistroScreen() {
                 )
             )
 
+            //Hace el subrayado del titulo
             HorizontalDivider(
-                modifier = Modifier.padding(top = 4.dp), // Menor espaciado
-                thickness = 2.dp, // Línea más delgada
+                modifier = Modifier.padding(top = 4.dp),
+                thickness = 2.dp,
                 color = Color.Green
             )
         }
 
-        // Card con formulario más compacto
+        // Card del formulario de registro
         Card(
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(
-                modifier = Modifier.padding(12.dp), // Padding reducido
-                verticalArrangement = Arrangement.spacedBy(8.dp) // Espaciado reducido
+                modifier = Modifier.padding(12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                // Campos más compactos
+
                 CompactCampoFormulario(
                     label = "Nombre",
                     value = nombre,
@@ -131,7 +132,7 @@ fun RegistroScreen() {
             }
         }
 
-        // Botones con tamaño fijo
+        // Botones
         Column(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -140,7 +141,7 @@ fun RegistroScreen() {
                 onClick = { /* Acción de confirmar */ },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(48.dp), // Altura fija
+                    .height(48.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Green,
                     contentColor = Color.White
@@ -153,7 +154,7 @@ fun RegistroScreen() {
                 onClick = { /* Acción de cancelar */ },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(48.dp), // Altura fija
+                    .height(48.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Red,
                     contentColor = Color.White
@@ -163,7 +164,7 @@ fun RegistroScreen() {
             }
         }
 
-        // Espaciador final más pequeño
+
         Spacer(modifier = Modifier.height(12.dp))
     }
 }
@@ -178,10 +179,10 @@ private fun CompactCampoFormulario(
     Column {
         Text(
             text = label,
-            style = MaterialTheme.typography.caption.copy( // Texto más pequeño
+            style = MaterialTheme.typography.caption.copy(
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f)
             ),
-            modifier = Modifier.padding(bottom = 2.dp) // Menor espaciado
+            modifier = Modifier.padding(bottom = 2.dp)
         )
 
         OutlinedTextField(
@@ -189,7 +190,7 @@ private fun CompactCampoFormulario(
             onValueChange = onValueChange,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(52.dp), // Altura reducida
+                .height(52.dp),
             singleLine = true,
             visualTransformation = visualTransformation
         )
