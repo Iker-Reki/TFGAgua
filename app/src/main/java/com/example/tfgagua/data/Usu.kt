@@ -72,3 +72,11 @@ data class RegistroResponse(
     @SerializedName("message") val message: String?
 )
 
+/**
+ * Datos para cambiar la contraseña
+ */
+data class CambioContrasena(
+    @SerializedName("idUsu") val idUsuario: Int,
+    @SerializedName("contraUsu") val nuevaContrasena: String
+)
+

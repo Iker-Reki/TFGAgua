@@ -91,6 +91,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.ads.mobile.sdk)
     implementation(libs.androidx.espresso.core)
+    implementation(libs.androidx.animation.core.lint)
 
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
 

@@ -1,5 +1,6 @@
 package com.example.tfgagua.conexion
 
+import com.example.tfgagua.data.CambioContrasena
 import com.example.tfgagua.data.CantCorreo
 import com.example.tfgagua.data.LoginRequest
 import com.example.tfgagua.data.LoginResponse
@@ -28,7 +29,13 @@ interface ApiService {
     ): Response<CantCorreo>
 
     @POST("api/registro")
-    fun registrarUsu(
+    suspend fun registrarUsu(
         @Body usuario: UsuRegistro
     ): Response<RegistroResponse>
+
+    @POST("api/cambio-contra")
+    suspend fun cambiarContrasena(
+        @Body request: CambioContrasena
+    ): Response<RegistroResponse>
+
 }

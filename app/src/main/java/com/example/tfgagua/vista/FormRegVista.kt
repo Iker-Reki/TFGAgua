@@ -1,6 +1,7 @@
 package com.example.tfgagua.vista
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,14 +42,17 @@ import com.example.tfgagua.conexion.RetrofitClient
 import com.example.tfgagua.data.UsuRegistro
 import com.example.tfgagua.ui.theme.DarkBlue
 import com.example.tfgagua.ui.theme.LightBlue
-
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 @Preview
 @Composable
 fun RegistroScreen() {
 
-val context = LocalContext.current
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     var nombre by remember { mutableStateOf("") }
     var ape1 by remember { mutableStateOf("") }
@@ -150,38 +155,60 @@ val context = LocalContext.current
         ) {
             Button(
                 onClick = {
-
-                    if(comprobarReg(context,nombre,ape1,ape2,correo,correoConfirm,contra,contraConfirm)) {
-                        try {
-                            val response = RetrofitClient.instancia.registrarUsu(
-                                UsuRegistro(
-                                    nombre = nombre,
-                                    apellido1 = ape1,
-                                    apellido2 = ape2,
-                                    correo = correo,
-                                    contrasena = contra
-                                )
-                            )
-
-                            if (response.isSuccessful && response.body()?.success == true) {
-                                Toast.makeText(context, "Registro exitoso", Toast.LENGTH_SHORT)
-                                    .show()
-
-                                //TODO: Navegar al inicio
-
-                            } else {
-                                Toast.makeText(
-                                    context,
-                                    response.body()?.message ?: "Error en el registro",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        } catch (e: Exception) {
-                            Toast.makeText(
+                    scope.launch {
+                        if (comprobarReg(
                                 context,
-                                "Error de conexión: ${e.message}",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                                nombre,
+                                ape1,
+                                ape2,
+                                correo,
+                                correoConfirm,
+                                contra,
+                                contraConfirm
+                            )
+                        ) {
+                            try {
+                                val response = RetrofitClient.instancia.registrarUsu(
+                                    UsuRegistro(
+                                        nombre = nombre,
+                                        apellido1 = ape1,
+                                        apellido2 = ape2,
+                                        correo = correo,
+                                        contrasena = contra
+                                    )
+                                )
+                                //Lo que va a devolver a devuelto el servidor
+                                val body = response.body()
+                                //Cambia al hilo principal de Andorid
+                                withContext(Dispatchers.Main) {
+                                    if (response.isSuccessful && response.body()?.success == true) {
+                                        Toast.makeText(
+                                            context,
+                                            "Registro exitoso",
+                                            Toast.LENGTH_SHORT
+                                        )
+                                            .show()
+
+                                        //TODO: Navegar al inicio
+
+                                    } else {
+                                        Toast.makeText(
+                                            context,
+                                            body?.message ?: "Error en el registro",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
+                            } catch (e: Exception) {
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(
+                                        context,
+                                        "Error de conexión: ${e.message}",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    Log.e("REGISTRO", "Error completo", e)
+                                }
+                            }
                         }
                     }
                 },
@@ -230,7 +257,10 @@ fun comprobarReg(
     //TODO: mirar si quitar de las validaciones el segundo apellido ya que normalmente es opcioanl
 
     //Validar nombres y apellidos
-    if (validacion.isBlankOrNull(nombre) || validacion.isBlankOrNull(ape1) || validacion.isBlankOrNull(ape2)){
+    if (validacion.isBlankOrNull(nombre) || validacion.isBlankOrNull(ape1) || validacion.isBlankOrNull(
+            ape2
+        )
+    ) {
         Toast.makeText(context, "Nombre y apellidos son obligatorios", Toast.LENGTH_SHORT).show()
         return false
     }
@@ -246,7 +276,8 @@ fun comprobarReg(
     }
 
     if (!validacion.validarEmail(correo)) {
-        Toast.makeText(context, "Correo electrónico no válido o ya registrado", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Correo electrónico no válido o ya registrado", Toast.LENGTH_SHORT)
+            .show()
         return false
     }
 
@@ -254,9 +285,8 @@ fun comprobarReg(
 }
 
 
-
 @Composable
-private fun CompactCampoFormulario(
+fun CompactCampoFormulario(
     label: String,
     value: String,
     onValueChange: (String) -> Unit,

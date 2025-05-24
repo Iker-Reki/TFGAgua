@@ -132,6 +132,12 @@ fun ElementosMenu(navController: NavHostController) {
 
 
             }
+            composable("cambio-contrasena") {
+                InicioVista(
+                    viewModel = usuViewModel,
+                    navigateTolista = { navController.navigate("inicio") }
+                )
+            }
 
         }
     }

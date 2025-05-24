@@ -1,7 +1,6 @@
 package com.example.tfgagua.vista
 
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -30,7 +29,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tfgagua.R
@@ -40,8 +38,6 @@ import com.example.tfgagua.ui.theme.DarkBlue
 import com.example.tfgagua.ui.theme.LightBlue
 import com.example.tfgagua.ui.theme.NoSelectField
 import com.example.tfgagua.ui.theme.SelectField
-import com.google.firebase.auth.FirebaseAuth
-import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.launch
 import androidx.compose.ui.platform.LocalContext
 import com.example.tfgagua.model.UsuViewModel
