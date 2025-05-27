@@ -2,6 +2,7 @@ package com.example.tfgagua.conexion
 
 import com.example.tfgagua.data.CambioContrasena
 import com.example.tfgagua.data.CantCorreo
+import com.example.tfgagua.data.Confederacion
 import com.example.tfgagua.data.LoginRequest
 import com.example.tfgagua.data.LoginResponse
 import com.example.tfgagua.data.RegistroResponse
@@ -37,5 +38,7 @@ interface ApiService {
     suspend fun cambiarContrasena(
         @Body request: CambioContrasena
     ): Response<RegistroResponse>
-
+    // Confederaciones
+    @GET("api/confederaciones")
+    suspend fun obtenerConfederaciones(): Response<List<Confederacion>>
 }

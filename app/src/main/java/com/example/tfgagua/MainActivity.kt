@@ -6,140 +6,115 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.tfgagua.conexion.ApiService
-import com.example.tfgagua.conexion.RetrofitClient
 import com.example.tfgagua.data.Usu
+import com.example.tfgagua.model.ConfederacionViewModel // Importar ViewModel
 import com.example.tfgagua.model.UsuViewModel
 import com.example.tfgagua.ui.theme.TFGAguaTheme
+import com.example.tfgagua.vista.CerrarSesVista // Importar Vista
 import com.example.tfgagua.vista.InicioVista
-import com.example.tfgagua.vista.ListaScreen
+import com.example.tfgagua.vista.ListaVista // Importar Vista
 import com.example.tfgagua.vista.RegistroScreen
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import okhttp3.OkHttpClient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.Retrofit.*
-import retrofit2.converter.gson.GsonConverterFactory
+
 
 class MainActivity : ComponentActivity() {
 
-    private lateinit var navController: NavHostController
-    //private lateinit var auth: FirebaseAuth
+    private lateinit var navController: NavHostController // No es necesario si se maneja en MainScreen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       //auth = Firebase.auth
         enableEdgeToEdge()
         setContent {
-
-            navController = rememberNavController()
-
+            // navController = rememberNavController() // Se puede inicializar en MainScreen directamente
             TFGAguaTheme {
                 Surface {
-                    //Prueba()
-                   // ElementosMenu(navController)
                     MainScreen()
                 }
             }
         }
     }
-
-
-/*
-    //Se llama despues del onCreate
-    /**
-     * Si el auth esta ya asociado va directamente a la vista de lista de embalses
-     */
-    override fun onStart() {
-        super.onStart()
-        val usuActual = auth.currentUser
-        if (usuActual != null){
-            //navController.navigate("lista")
-            Log.i("Prueba", "Estoy logeado")
-        }
-    }
-*/
-    private fun Prueba() {
-
-        RetrofitClient.instancia.obtenerUsu().enqueue(object : Callback<List<Usu>> {
-            override fun onResponse(call: Call<List<Usu>>, response: Response<List<Usu>>) {
-                if (response.isSuccessful) {
-                    val lista = response.body()
-                    lista?.forEach {
-                        Log.d("USUARIO", "ID: ${it.id}, Nombre: ${it.nombre}, Apellido 1: ${it.apellido1}, Apellido 2: ${it.apellido2}, Correo:${it.correo}")
-                    }
-                    Toast.makeText(this@MainActivity, "Usuarios cargados: ${lista?.size}", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this@MainActivity, "Error al obtener usuarios", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<List<Usu>>, t: Throwable) {
-                Toast.makeText(this@MainActivity, "Error: ${t.message}", Toast.LENGTH_LONG).show()
-                Log.d("ERROR","${t.message}")
-            }
-        })
-    }
 }
 
 @Composable
 fun MainScreen() {
-    //NavController  - NavHost -
     val navController = rememberNavController()
-    ElementosMenu(navController)
+    // Crear instancias de ViewModels aquí si necesitas pasarlas a múltiples composables
+    // o usar viewModel() directamente en cada composable como ya haces.
+    ElementosMenu(navController = navController)
 }
 
 
 @Composable
 fun ElementosMenu(navController: NavHostController) {
-    val usuViewModel : UsuViewModel = viewModel()
+    val usuViewModel: UsuViewModel = viewModel()
+    val confederacionViewModel: ConfederacionViewModel = viewModel() // ViewModel para confederaciones
 
-    Scaffold(
-//        topBar = {
-//            TopBar(navController = navController)
-//        }
-    ) { paddingValues ->
-        NavHost(navController = navController, startDestination = "inicio") {
+    Scaffold { paddingValues -> // Eliminado el topBar de aquí si cada pantalla lo maneja
+        NavHost(
+            navController = navController,
+            startDestination = "inicio",
+            modifier = Modifier.padding(paddingValues) // Aplicar paddingValues del Scaffold
+        ) {
 
             composable("inicio") {
                 InicioVista(
-                    navigateToFormReg = {navController.navigate("registro")},
-                    navigateTolista = {navController.navigate("lista")} ,
+                    navigateToFormReg = { navController.navigate("registro") },
+                    navigateTolista = { navController.navigate("listaConfederaciones") }, // Cambiar a nueva ruta
                     viewModel = usuViewModel
                 )
             }
 
             composable("registro") {
-
-                RegistroScreen()
-
-            }
-
-            composable("lista") {
-                ListaScreen(viewModel = usuViewModel)
-
-
-            }
-            composable("cambio-contrasena") {
-                InicioVista(
-                    viewModel = usuViewModel,
-                    navigateTolista = { navController.navigate("inicio") }
+                RegistroScreen(
+                    // Si RegistroScreen necesita navegar de vuelta o a otro lado:
+                    // onNavigateBack = { navController.popBackStack() },
+                    // onNavigateToLogin = { navController.navigate("inicio") { popUpTo("inicio") { inclusive = true } } }
                 )
             }
 
+            // Nueva ruta para la lista de confederaciones
+            composable("listaConfederaciones") {
+                ListaVista(
+                    navController = navController,
+                    confederacionViewModel = confederacionViewModel
+                )
+            }
+
+            // Ruta para la vista de cerrar sesión/configuración
+            composable("cerrarSesion") {
+                CerrarSesVista(
+                    viewModel = usuViewModel,
+                    navController = navController
+                )
+            }
+
+            composable("cambio-contrasena") { // Esta ruta parece redundante con InicioVista si solo navega a inicio
+                // Considera si esta pantalla es distinta o si la lógica puede ir en otro lado
+                // Por ahora, la dejo como estaba en tu código original.
+                InicioVista(
+                    viewModel = usuViewModel,
+                    navigateTolista = { navController.navigate("inicio") } //
+                )
+            }
+            // composable("lista") { // Esta era la ruta original para ListaScreen, la cambiamos por listaConfederaciones
+            // ListaScreen(viewModel = usuViewModel)
+            // }
+
+
+            // TODO: Definir la ruta para "DetallesVista" cuando la crees
+            // composable("detallesVista/{confederacionId}") { backStackEntry ->
+            // val confederacionId = backStackEntry.arguments?.getString("confederacionId")
+            // DetallesVista(navController = navController, confederacionId = confederacionId)
+            // }
         }
     }
-
 }
