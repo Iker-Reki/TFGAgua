@@ -3,6 +3,7 @@ package com.example.tfgagua.conexion
 import com.example.tfgagua.data.CambioContrasena
 import com.example.tfgagua.data.CantCorreo
 import com.example.tfgagua.data.Confederacion
+import com.example.tfgagua.data.FavoritoRequest
 import com.example.tfgagua.data.LoginRequest
 import com.example.tfgagua.data.LoginResponse
 import com.example.tfgagua.data.RegistroResponse
@@ -14,6 +15,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
+import retrofit2.http.DELETE // Importar DELETE
 
 interface ApiService {
     @GET("api/usuario")
@@ -41,4 +43,16 @@ interface ApiService {
     // Confederaciones
     @GET("api/confederaciones")
     suspend fun obtenerConfederaciones(): Response<List<Confederacion>>
+
+    // NUEVO: Obtener confederaciones favoritas para un usuario
+    @GET("api/confederaciones/favoritas")
+    suspend fun obtenerConfederacionesFavoritas(@Query("idUsu") idUsu: Int): Response<List<Confederacion>>
+
+    // NUEVO: Añadir una confederación a favoritos
+    @POST("api/confederaciones/favoritas")
+    suspend fun añadirFavorito(@Body favoritoRequest: FavoritoRequest): Response<RegistroResponse>
+
+    // NUEVO: Eliminar una confederación de favoritos
+    @DELETE("api/confederaciones/favoritas")
+    suspend fun eliminarFavorito(@Query("idUsu") idUsu: Int, @Query("idConfe") idConfe: Int): Response<RegistroResponse>
 }
