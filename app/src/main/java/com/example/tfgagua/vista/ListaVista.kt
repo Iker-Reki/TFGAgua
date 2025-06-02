@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Search
@@ -26,13 +27,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.tfgagua.data.Confederacion
 import com.example.tfgagua.model.ConfederacionViewModel
-import com.example.tfgagua.ui.theme.DarkBlue // Asegúrate de tener estos colores definidos
+import com.example.tfgagua.ui.theme.DarkBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListaVista(
     navController: NavHostController,
-    confederacionViewModel: ConfederacionViewModel = viewModel()
+    confederacionViewModel: ConfederacionViewModel = viewModel(),
+    onConfederacionClick: (Int) -> Unit // Nueva lambda para el click en la confederación
 ) {
     val context = LocalContext.current
     val confederacionesState by confederacionViewModel.confederaciones.collectAsState()
@@ -100,9 +102,7 @@ fun ListaVista(
                 ) {
                     items(confederacionesFavoritasState) { confederacion ->
                         FavoriteConfederationCard(confederacion = confederacion) {
-                            // TODO: Implementar navegación a DetallesVista.kt
-                            // navController.navigate("detallesVista/${confederacion.id}")
-                            Toast.makeText(context, "Ir a detalles de ${confederacion.nombre}", Toast.LENGTH_SHORT).show()
+                            onConfederacionClick(confederacion.id) // Navegar al hacer clic
                         }
                     }
                 }
@@ -172,9 +172,7 @@ fun ListaVista(
                                 confederacionViewModel.toggleFavorito(idUsu, confederacion)
                             }
                         ) {
-                            // TODO: Implementar navegación a DetallesVista.kt
-                            // navController.navigate("detallesVista/${confederacion.id}")
-                            Toast.makeText(context, "Ir a detalles de ${confederacion.nombre}", Toast.LENGTH_SHORT).show()
+                            onConfederacionClick(confederacion.id) // Navegar al hacer clic
                         }
                     }
                 }
@@ -230,7 +228,7 @@ fun ConfederacionCard(confederacion: Confederacion, isFavorite: Boolean, onFavor
                 .padding(16.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween // Para separar el texto del icono
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
