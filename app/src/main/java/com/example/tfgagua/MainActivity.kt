@@ -24,6 +24,7 @@ import com.example.tfgagua.model.UsuViewModel
 import com.example.tfgagua.model.DetallesViewModel // Importar DetallesViewModel
 import com.example.tfgagua.ui.theme.TFGAguaTheme
 import com.example.tfgagua.vista.CerrarSesVista
+import com.example.tfgagua.vista.ContraVista
 import com.example.tfgagua.vista.InicioVista
 import com.example.tfgagua.vista.ListaVista
 import com.example.tfgagua.vista.RegistroScreen
@@ -77,6 +78,10 @@ fun ElementosMenu(navController: NavHostController) {
 
             composable("registro") {
                 RegistroScreen(
+                    navigateToInicio = { navController.navigate("inicio"){
+                        popUpTo("inicio") { inclusive = true }
+
+                    } }
                     // onNavigateBack = { navController.popBackStack() },
                     // onNavigateToLogin = { navController.navigate("inicio") { popUpTo("inicio") { inclusive = true } } }
                 )
@@ -84,6 +89,7 @@ fun ElementosMenu(navController: NavHostController) {
 
             composable("listaConfederaciones") {
                 ListaVista(
+                    viewModel = usuViewModel,
                     navController = navController,
                     confederacionViewModel = confederacionViewModel,
                     onConfederacionClick = { idConfe ->
@@ -99,10 +105,11 @@ fun ElementosMenu(navController: NavHostController) {
                 )
             }
 
-            composable("cambio-contrasena") {
-                InicioVista(
+            composable("cambioContrasena") {
+                ContraVista(
                     viewModel = usuViewModel,
-                    navigateTolista = { navController.navigate("inicio") }
+                    navigateTolista = {navController.navigate("listaConfederaciones") },
+                    navigateToInicio = { navController.navigate("inicio") }
                 )
             }
 

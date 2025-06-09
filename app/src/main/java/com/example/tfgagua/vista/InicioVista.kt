@@ -4,6 +4,7 @@ package com.example.tfgagua.vista
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,6 +41,7 @@ import com.example.tfgagua.ui.theme.NoSelectField
 import com.example.tfgagua.ui.theme.SelectField
 import kotlinx.coroutines.launch
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import com.example.tfgagua.model.UsuViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -71,7 +73,7 @@ fun InicioVista(
         Image(painter = painterResource(id = R.drawable.icapp), contentDescription = "")
         //TODO: Hacer el icono mas grande
         Spacer(modifier = Modifier.weight(1f))
-        //TODO: Quitar el text de inicio???
+
         Text(
             "INICIO",
             color = Color.White,
@@ -102,14 +104,14 @@ fun InicioVista(
             colors = TextFieldDefaults.colors(
                 unfocusedContainerColor =  NoSelectField,
                 focusedContainerColor = SelectField
-            ))
+            ),
+            visualTransformation = PasswordVisualTransformation(),)
 
 
         Spacer(modifier = Modifier.weight(1f))
 
         //--------------------------------------------BOTONES-----------------------------------------------
 
-        //TODO: Poner los botones en un metodo externo
         //________________________Boton de logearse_____________________________
         Button(
             onClick = {
@@ -156,11 +158,21 @@ fun InicioVista(
         }
 
         //________________________Texto de he olvidado contraseña_____________________________
-        Text(
-            //TODO: Poner el onCLick para que redirija o quitar la opcion o que muestre un mensaje de que se ponga en contacto con el servicio tecnico
-            text = "He olvidado la contraseña",
-            modifier = Modifier.padding(vertical = 10.dp), fontWeight = FontWeight.Bold
-        )
+
+            Text(
+                text = "He olvidado la contraseña",
+                modifier = Modifier
+                    .padding(vertical = 10.dp)
+                    .clickable {
+                        Toast.makeText(
+                            context,
+                            "Por favor, contacte con el servicio técnico",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    },
+                fontWeight = FontWeight.Bold
+            )
+
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -180,7 +192,11 @@ fun InicioVista(
         //________________________Boton de continuar sin inicio de sesion_____________________________
         Button(
             onClick = {
-                //TODO: Pasar a las listas con un usuario y contraseña predefinido
+                Toast.makeText(
+                    context,
+                    "FUNCIÓN PROXIMAMENTE DISPONIBLE",
+                    Toast.LENGTH_LONG
+                ).show()
             },
             modifier = Modifier
                 .fillMaxWidth()

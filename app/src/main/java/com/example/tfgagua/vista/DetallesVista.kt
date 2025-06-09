@@ -112,7 +112,6 @@ fun DetallesVista(
                             Column(modifier = Modifier.padding(16.dp)) {
                                 DetailRow("Ubicación:", detalle.ubicacion)
                                 DetailRow("Capacidad:", "${detalle.capacidad} m³")
-                                // Use the new formatting function here
                                 DetailRow("Fecha de Construcción:", formatDateString(detalle.fecConstruccion))
                                 DetailRow("Altura:", "${detalle.altura} metros")
                             }
@@ -180,7 +179,7 @@ fun WaterLevelGraph(datosAgua: List<DatoAgua>) {
         return
     }
 
-    val maxLevel = 100 // Assuming max level is 100% for the graph
+    val maxLevel = 300 // Assuming max level is 100% for the graph
     val barWidth = 40.dp
     val spacing = 16.dp
 
@@ -199,8 +198,8 @@ fun WaterLevelGraph(datosAgua: List<DatoAgua>) {
             items(datosAgua.sortedBy { it.hora }) { dato ->
                 val barHeight = (dato.nivel.toFloat() / maxLevel) * 150f // Max height 150dp
                 val barColor = when {
-                    dato.nivel < 33 -> Color.Green
-                    dato.nivel < 66 -> colorResource(id = R.color.orange) // Corrected orange color
+                    dato.nivel < 70 -> Color.Green
+                    dato.nivel < 200 -> colorResource(id = R.color.orange) // Corrected orange color
                     else -> Color.Red
                 }
 

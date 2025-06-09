@@ -8,5 +8,5 @@ data class Embalse(
     val embalseFecConst: Date,
 
     //Lista de datos de los sensores
-    val datos: List<Dato>
+    //val datos: List<Dato>
 )

@@ -27,11 +27,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.tfgagua.data.Confederacion
 import com.example.tfgagua.model.ConfederacionViewModel
+import com.example.tfgagua.model.UsuViewModel
 import com.example.tfgagua.ui.theme.DarkBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListaVista(
+    viewModel: UsuViewModel,
     navController: NavHostController,
     confederacionViewModel: ConfederacionViewModel = viewModel(),
     onConfederacionClick: (Int) -> Unit // Nueva lambda para el click en la confederación
@@ -41,17 +43,17 @@ fun ListaVista(
     val confederacionesFavoritasState by confederacionViewModel.confederacionesFavoritas.collectAsState()
     val isLoading by confederacionViewModel.isLoading.collectAsState()
     val errorMensaje by confederacionViewModel.errorMensaje.collectAsState()
+    val usuario by viewModel.usuario.collectAsState()
 
     var searchQuery by remember { mutableStateOf(TextFieldValue("")) }
 
-    // TODO: Obtener el idUsu del usuario logeado (ej. desde SharedPreferences o un ViewModel de sesión)
-    // Placeholder para el idUsu. DEBES reemplazar esto con el ID real del usuario logeado.
-    val idUsu = 1 // Ejemplo: Asume que el usuario con ID 1 está logeado.
-
+    val idUsu = usuario?.id
     // Cargar las confederaciones cuando la vista se compone por primera vez
     LaunchedEffect(Unit) {
         confederacionViewModel.cargarConfederaciones()
-        confederacionViewModel.cargarConfederacionesFavoritas(idUsu)
+        if (idUsu != null) {
+            confederacionViewModel.cargarConfederacionesFavoritas(idUsu)
+        }
     }
 
     Scaffold(
@@ -59,7 +61,7 @@ fun ListaVista(
             TopAppBar(
                 title = { Text("WaterWarn", color = Color.White) },
                 actions = {
-                    IconButton(onClick = { navController.navigate("cerrarSesion") }) {
+                    IconButton(onClick = { navController.navigate("cambioContrasena") }) {
                         Icon(Icons.Filled.Settings, contentDescription = "Configuración", tint = Color.White)
                     }
                 },
@@ -169,7 +171,9 @@ fun ListaVista(
                             confederacion = confederacion,
                             isFavorite = isFavorite,
                             onFavoriteClick = {
-                                confederacionViewModel.toggleFavorito(idUsu, confederacion)
+                                if (idUsu != null) {
+                                    confederacionViewModel.toggleFavorito(idUsu, confederacion)
+                                }
                             }
                         ) {
                             onConfederacionClick(confederacion.id) // Navegar al hacer clic

@@ -43,20 +43,19 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 
-@Preview
 @Composable
-fun CambioContrasenaScreen(
+fun ContraVista(
     viewModel: UsuViewModel = UsuViewModel(),
-    navigateTolista: () -> Unit = {}
+    navigateTolista: () -> Unit = {},
+    navigateToInicio: () -> Unit = {}
 ) {
-    viewModel.setUsuarioDePrueba()
+
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     var actualContra by remember { mutableStateOf("") }
     var newContra by remember { mutableStateOf("") }
     var confirmContra by remember { mutableStateOf("") }
-    var verContra by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -143,6 +142,7 @@ fun CambioContrasenaScreen(
                     actualContra = newActual
                     newContra = newNew
                     confirmContra = newConfirm
+                    navigateTolista()
 
                 },
                 modifier = Modifier
@@ -159,7 +159,7 @@ fun CambioContrasenaScreen(
             Button(
                 onClick = {
                     viewModel.setUsuario(null)
-                    navigateTolista()
+                    navigateToInicio()
                     Toast.makeText(context, "SESIÓN CERRADA", Toast.LENGTH_SHORT).show()
                 },
                 modifier = Modifier

@@ -49,7 +49,9 @@ import kotlinx.coroutines.withContext
 
 @Preview
 @Composable
-fun RegistroScreen() {
+fun RegistroScreen(
+    navigateToInicio: () -> Unit = {}
+) {
 
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -186,10 +188,8 @@ fun RegistroScreen() {
                                             context,
                                             "Registro exitoso",
                                             Toast.LENGTH_SHORT
-                                        )
-                                            .show()
-
-                                        //TODO: Navegar al inicio
+                                        ).show()
+                                        navigateToInicio()
 
                                     } else {
                                         Toast.makeText(
@@ -224,7 +224,9 @@ fun RegistroScreen() {
             }
 
             Button(
-                onClick = { /* Acción de cancelar */ },
+                onClick = {
+                    navigateToInicio()
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp),
