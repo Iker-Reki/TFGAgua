@@ -256,8 +256,6 @@ fun comprobarReg(
 ): Boolean {
     val validacion = Validaciones()
 
-    //TODO: mirar si quitar de las validaciones el segundo apellido ya que normalmente es opcioanl
-
     //Validar nombres y apellidos
     if (validacion.isBlankOrNull(nombre) || validacion.isBlankOrNull(ape1) || validacion.isBlankOrNull(
             ape2

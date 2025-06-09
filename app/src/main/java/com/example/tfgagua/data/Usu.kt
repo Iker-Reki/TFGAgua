@@ -11,11 +11,6 @@ data class Usu(
     @SerializedName("correoUsu") val correo: String,
     @SerializedName("contraUsu") val contrasena:String
 
-
-
-
-    //Embalses asociados
-   // val embalses:List<Embalse>
 )
 
 /**

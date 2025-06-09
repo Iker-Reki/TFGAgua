@@ -41,7 +41,7 @@ class DetallesViewModel : ViewModel() {
             _isLoading.value = true
             _errorMensaje.value = null
             try {
-                // Use the 'instancia' for your Clever Cloud API calls
+
                 val response = RetrofitClient.instancia.obtenerDetalleConfederacion(idConfe)
                 if (response.isSuccessful) {
                     _confederacionDetalle.value = response.body()
@@ -70,11 +70,11 @@ class DetallesViewModel : ViewModel() {
 
     private fun cargarDatosAgua(confeId: Int) {
         viewModelScope.launch {
-            _isLoading.value = true // Keep loading true if this is called independently
+            _isLoading.value = true
             _errorMensaje.value = null
             try {
                 val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-                // Use the 'instancia' for your Clever Cloud API calls
+
                 val response = RetrofitClient.instancia.obtenerDatosAgua(confeId, currentDate)
                 if (response.isSuccessful) {
                     _datosAgua.value = response.body() ?: emptyList()
@@ -89,8 +89,7 @@ class DetallesViewModel : ViewModel() {
             } catch (e: Exception) {
                 _errorMensaje.value = "Error desconocido al cargar datos de agua: ${e.message}"
             } finally {
-                // If loading was true, set it to false, but be careful if other calls are pending
-                // _isLoading.value = false
+
             }
         }
     }
@@ -99,8 +98,7 @@ class DetallesViewModel : ViewModel() {
         viewModelScope.launch {
             _errorMensaje.value = null
             try {
-                // *** IMPORTANT CHANGE HERE ***
-                // Use RetrofitClient.weatherApiService for WeatherAPI calls
+
                 val response = RetrofitClient.weatherApiService.getCurrentWeather(WEATHER_API_KEY, ubicacion)
                 if (response.isSuccessful) {
                     _weatherData.value = response.body()

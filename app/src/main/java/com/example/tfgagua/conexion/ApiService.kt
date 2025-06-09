@@ -48,27 +48,27 @@ interface ApiService {
     @GET("api/confederaciones")
     suspend fun obtenerConfederaciones(): Response<List<Confederacion>>
 
-    // NUEVO: Obtener confederaciones favoritas para un usuario
+    //Obtener confederaciones favoritas para un usuario
     @GET("api/confederaciones/favoritas")
     suspend fun obtenerConfederacionesFavoritas(@Query("idUsu") idUsu: Int): Response<List<Confederacion>>
 
-    // NUEVO: Añadir una confederación a favoritos
+    // Añadir una confederación a favoritos
     @POST("api/confederaciones/favoritas")
     suspend fun añadirFavorito(@Body favoritoRequest: FavoritoRequest): Response<RegistroResponse>
 
-    // NUEVO: Eliminar una confederación de favoritos
+    // Eliminar una confederación de favoritos
     @DELETE("api/confederaciones/favoritas")
     suspend fun eliminarFavorito(@Query("idUsu") idUsu: Int, @Query("idConfe") idConfe: Int): Response<RegistroResponse>
 
-    // NUEVO: Obtener detalles de una confederación por ID
+    // Obtener detalles de una confederación por ID
     @GET("api/confederacion/{idConfe}")
     suspend fun obtenerDetalleConfederacion(@Path("idConfe") idConfe: Int): Response<ConfederacionDetalle>
 
-    // NUEVO: Obtener datos de nivel de agua para una confederación por fecha
+    // Obtener datos de nivel de agua para una confederación por fecha
     @GET("api/datos_confederacion/{confeId}")
     suspend fun obtenerDatosAgua(@Path("confeId") confeId: Int, @Query("date") date: String): Response<List<DatoAgua>>
 
-    // WeatherAPI - ADD lang parameter
+    // WeatherAPI
     @GET("v1/current.json")
     suspend fun getCurrentWeather(
         @Query("key") apiKey: String,

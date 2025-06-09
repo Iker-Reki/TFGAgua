@@ -85,11 +85,5 @@ class Validaciones {
 
 
 
-    /*
-    fun validarPlantilla(contrasena: String): Boolean {
-        // Mínimo 8 caracteres, al menos 1 mayúscula, 1 número y 1 carácter especial
-        val pattern = Pattern.compile("^(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}\$")
-        return pattern.matcher(contrasena).matches()
-    }
-    */
+
 }

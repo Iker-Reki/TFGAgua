@@ -141,13 +141,13 @@ fun DetallesVista(
     }
 }
 
-// Helper function to format the date string
+
 fun formatDateString(dateString: String): String {
-    // Input format example: 2020-01-15T00:00:00.000Z
+
     val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
     inputFormat.timeZone = TimeZone.getTimeZone("UTC") // Important for 'Z' suffix
 
-    // Output format example: 15/01/2020
+
     val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
     return try {
@@ -179,7 +179,7 @@ fun WaterLevelGraph(datosAgua: List<DatoAgua>) {
         return
     }
 
-    val maxLevel = 300 // Assuming max level is 100% for the graph
+    val maxLevel = 300
     val barWidth = 40.dp
     val spacing = 16.dp
 
@@ -190,16 +190,16 @@ fun WaterLevelGraph(datosAgua: List<DatoAgua>) {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(250.dp) // Height for the graph area
+                .height(250.dp)
                 .padding(16.dp),
             verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.spacedBy(spacing)
         ) {
             items(datosAgua.sortedBy { it.hora }) { dato ->
-                val barHeight = (dato.nivel.toFloat() / maxLevel) * 150f // Max height 150dp
+                val barHeight = (dato.nivel.toFloat() / maxLevel) * 150f
                 val barColor = when {
                     dato.nivel < 70 -> Color.Green
-                    dato.nivel < 200 -> colorResource(id = R.color.orange) // Corrected orange color
+                    dato.nivel < 200 -> colorResource(id = R.color.orange)
                     else -> Color.Red
                 }
 
@@ -223,7 +223,7 @@ fun WaterLevelGraph(datosAgua: List<DatoAgua>) {
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = dato.hora.substring(0, 5), // Show HH:MM
+                        text = dato.hora.substring(0, 5),
                         fontSize = 10.sp,
                         color = Color.Gray
                     )
@@ -259,7 +259,7 @@ fun WeatherCard(weatherData: com.example.tfgagua.data.WeatherResponse?) {
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = weatherData.current.condition.text, // This will now be in Spanish
+                    text = weatherData.current.condition.text,
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.Gray
                 )
@@ -279,7 +279,7 @@ fun WeatherCard(weatherData: com.example.tfgagua.data.WeatherResponse?) {
                     style = MaterialTheme.typography.bodySmall
                 )
             }
-            // Weather Icon
+
             val iconUrl = "https:${weatherData.current.condition.icon}"
             AsyncImage(
                 model = iconUrl,

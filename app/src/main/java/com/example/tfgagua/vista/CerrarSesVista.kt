@@ -42,11 +42,11 @@ fun CerrarSesVista(viewModel: UsuViewModel, navController: NavHostController) {
                 Column(modifier = Modifier.padding(vertical = 8.dp)) {
                     Text(
                         text = label,
-                        color = DarkBlue, // Puedes usar tu color DarkBlue
+                        color = DarkBlue,
                         fontWeight = FontWeight.Bold
                     )
                     Text(text = value)
-                    Divider(color = LightBlue, thickness = 1.dp) // Puedes usar tu color LightBlue
+                    Divider(color = LightBlue, thickness = 1.dp)
                 }
             }
             Spacer(modifier = Modifier.height(32.dp))

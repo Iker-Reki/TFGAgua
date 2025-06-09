@@ -82,8 +82,7 @@ fun ElementosMenu(navController: NavHostController) {
                         popUpTo("inicio") { inclusive = true }
 
                     } }
-                    // onNavigateBack = { navController.popBackStack() },
-                    // onNavigateToLogin = { navController.navigate("inicio") { popUpTo("inicio") { inclusive = true } } }
+
                 )
             }
 
@@ -113,7 +112,7 @@ fun ElementosMenu(navController: NavHostController) {
                 )
             }
 
-            // Ruta para DetallesVista
+
             composable(
                 route = "detallesVista/{confederacionId}",
                 arguments = listOf(navArgument("confederacionId") { type = NavType.IntType })
@@ -126,7 +125,7 @@ fun ElementosMenu(navController: NavHostController) {
                         detallesViewModel = detallesViewModel
                     )
                 } else {
-                    // Handle error or navigate back if ID is missing
+
                     Toast.makeText(navController.context, "Confederación ID no encontrado", Toast.LENGTH_SHORT).show()
                     navController.popBackStack()
                 }

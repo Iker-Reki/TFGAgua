@@ -22,7 +22,7 @@ data class Current(
     @SerializedName("humidity") val humidity: Int,
     @SerializedName("wind_kph") val windKph: Double,
     @SerializedName("precip_mm") val precipMm: Double
-    // Add other fields you might need, e.g., icon
+
 )
 
 data class Condition(
